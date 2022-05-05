@@ -19,21 +19,31 @@
                 x:Name="Image"
                 Source="https://cdn4.iconfinder.com/data/icons/file-format/111/jpg_jpeg-512.png"
                 VerticalOptions="FillAndExpand" />
+
+            <Label x:Name="Caption" HorizontalTextAlignment="Center" />
         </StackLayout>
 
-        <StackLayout Orientation="Horizontal" VerticalOptions="End">
+        <StackLayout Orientation="Vertical" VerticalOptions="End">
             <!--  bottom controls  -->
-            <Button
-                x:Name="CameraButton"
-                Clicked="CameraButton_Clicked"
-                HorizontalOptions="FillAndExpand"
-                Text="Camera" />
+            <StackLayout Orientation="Horizontal">
+                <Button
+                    x:Name="CameraButton"
+                    Clicked="CameraButton_Clicked"
+                    HorizontalOptions="FillAndExpand"
+                    Text="Camera" />
+
+                <Button
+                    x:Name="GalleryButton"
+                    Clicked="GalleryButton_Clicked"
+                    HorizontalOptions="FillAndExpand"
+                    Text="Gallery" />
+            </StackLayout>
 
             <Button
-                x:Name="GalleryButton"
-                Clicked="GalleryButton_Clicked"
-                HorizontalOptions="FillAndExpand"
-                Text="Gallery" />
+                x:Name="ComputerVisionButton"
+                Clicked="ComputerVisionButton_Clicked"
+                IsVisible="False"
+                Text="Try Computer Vision" />
         </StackLayout>
     </StackLayout>
 
