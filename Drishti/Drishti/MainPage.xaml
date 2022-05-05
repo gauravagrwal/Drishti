@@ -1,24 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Drishti.MainPage">
+<ContentPage
+    x:Class="Drishti.MainPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:Drishti.ViewModels">
+
+    <NavigationPage.TitleView>
+        <Label
+            FontAttributes="Bold"
+            FontSize="Title"
+            HorizontalOptions="Center"
+            Text="Drishti" />
+    </NavigationPage.TitleView>
+
+    <ContentPage.BindingContext>
+        <vm:MediaPickerViewModel />
+    </ContentPage.BindingContext>
 
     <StackLayout>
-        <Frame BackgroundColor="#2196F3" Padding="24" CornerRadius="0">
-            <Label Text="Welcome to Xamarin.Forms!" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
-        </Frame>
-        <Label Text="Start developing now" FontSize="Title" Padding="30,10,30,10"/>
-        <Label Text="Make changes to your XAML file and save to see your UI update in the running app with XAML Hot Reload. Give it a try!" FontSize="16" Padding="30,0,30,0"/>
-        <Label FontSize="16" Padding="30,24,30,0">
-            <Label.FormattedText>
-                <FormattedString>
-                    <FormattedString.Spans>
-                        <Span Text="Learn more at "/>
-                        <Span Text="https://aka.ms/xamarin-quickstart" FontAttributes="Bold"/>
-                    </FormattedString.Spans>
-                </FormattedString>
-            </Label.FormattedText>
-        </Label>
+
+        <StackLayout VerticalOptions="CenterAndExpand">
+            <!--  middle controls  -->
+            <Image
+                x:Name="Image"
+                IsVisible="{Binding ShowPhoto}"
+                Source="{Binding PhotoPath}"
+                VerticalOptions="FillAndExpand" />
+        </StackLayout>
+
+        <StackLayout
+            Margin="10"
+            Orientation="Horizontal"
+            VerticalOptions="End">
+            <!--  bottom controls  -->
+            <Button
+                Command="{Binding CapturePhotoCommand}"
+                HorizontalOptions="FillAndExpand"
+                Text="Camera" />
+
+            <Button
+                Command="{Binding PickPhotoCommand}"
+                HorizontalOptions="FillAndExpand"
+                Text="Gallery" />
+
+        </StackLayout>
     </StackLayout>
 
 </ContentPage>
