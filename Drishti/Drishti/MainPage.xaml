@@ -44,6 +44,12 @@
                 Clicked="ComputerVisionButton_Clicked"
                 IsVisible="False"
                 Text="Try Computer Vision" />
+
+            <Button
+                x:Name="FaceAPIButton"
+                Clicked="FaceAPIButton_Clicked"
+                IsVisible="False"
+                Text="Try Face API" />
         </StackLayout>
     </StackLayout>
 

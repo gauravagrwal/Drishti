@@ -1,10 +1,14 @@
 ﻿using Drishti.Services;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
+using Microsoft.Azure.CognitiveServices.Vision.Face;
+using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -14,12 +18,14 @@ namespace Drishti
     {
         public MediaFile image;
         public ComputerVisionService computervisioncreds;
+        public FaceAPIService faceapicreds;
 
         public MainPage()
         {
             InitializeComponent();
 
             computervisioncreds = new ComputerVisionService();
+            faceapicreds = new FaceAPIService();
         }
 
         private async void CameraButton_Clicked(object sender, EventArgs e)
@@ -46,6 +52,7 @@ namespace Drishti
 
             Image.Source = ImageSource.FromStream(() => image.GetStream());
             ComputerVisionButton.IsVisible = true;
+            FaceAPIButton.IsVisible = true;
         }
 
         private async void GalleryButton_Clicked(object sender, EventArgs e)
@@ -64,6 +71,7 @@ namespace Drishti
 
             Image.Source = ImageSource.FromStream(() => image.GetStream());
             ComputerVisionButton.IsVisible = true;
+            FaceAPIButton.IsVisible = true;
         }
 
         private async void ComputerVisionButton_Clicked(object sender, EventArgs e)
@@ -130,6 +138,66 @@ namespace Drishti
             string caption = result.Captions.FirstOrDefault().Text;
 
             Caption.Text = caption;
+        }
+
+        private async void FaceAPIButton_Clicked(object sender, EventArgs e)
+        {
+            if (Image.Source == null)
+            {
+                await DisplayAlert("Info", "Missing Image", "Ok");
+            }
+            else
+            {
+                try
+                {
+                    var client = new FaceClient(
+                        new Microsoft.Azure.CognitiveServices.Vision.Face.ApiKeyServiceClientCredentials(faceapicreds.Key))
+                    { Endpoint = faceapicreds.Endpoint };
+
+                    var responseList = await client.Face.DetectWithStreamAsync(
+                        image.GetStream(),
+                        returnFaceAttributes: new List<FaceAttributeType> {
+                            FaceAttributeType.Age,
+                            FaceAttributeType.Emotion,
+                            FaceAttributeType.Gender
+                        });
+
+                    var face = responseList.FirstOrDefault();
+
+                    double? age = face.FaceAttributes.Age;
+                    string emotion = FindPredominantEmotion(face);
+                    Microsoft.Azure.CognitiveServices.Vision.Face.Models.Gender? gender = face.FaceAttributes.Gender;
+
+                    string result = $"- Age: " + age + "\n- Emotion: " + emotion + "\n- Gender: " + gender;
+
+                    await DisplayAlert("Result", result, "Ok");
+                }
+                catch (Exception ex)
+                {
+                    await DisplayAlert("Info", ex.Message, "Ok");
+                }
+            }
+        }
+
+        public string FindPredominantEmotion(DetectedFace face)
+        {
+            double max = 0;
+            PropertyInfo prop = null;
+
+            var Emotions = typeof(Emotion).GetProperties();
+            
+            foreach (var emotion in Emotions)
+            {
+                double value = (double)emotion.GetValue(face.FaceAttributes.Emotion);
+
+                if (value > max)
+                {
+                    max = value;
+                    prop = emotion;
+                }
+            }
+
+            return prop.Name.ToString();
         }
     }
 }

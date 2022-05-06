@@ -126,6 +126,9 @@
     <PackageReference Include="Microsoft.Azure.CognitiveServices.Vision.ComputerVision">
       <Version>7.0.1</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Azure.CognitiveServices.Vision.Face">
+      <Version>2.8.0-preview.2</Version>
+    </PackageReference>
     <PackageReference Include="Xam.Plugin.Media">
       <Version>5.0.1</Version>
     </PackageReference>
