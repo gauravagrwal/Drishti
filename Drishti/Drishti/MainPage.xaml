@@ -2,7 +2,8 @@
 <ContentPage
     x:Class="Drishti.MainPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:Drishti.ViewModels">
 
     <NavigationPage.TitleView>
         <Label
@@ -12,12 +13,16 @@
             Text="Drishti" />
     </NavigationPage.TitleView>
 
+    <ContentPage.BindingContext>
+        <vm:MainViewModel />
+    </ContentPage.BindingContext>
+
     <StackLayout Margin="10">
         <StackLayout VerticalOptions="CenterAndExpand">
             <!--  middle controls  -->
             <Image
                 x:Name="Image"
-                Source="https://cdn4.iconfinder.com/data/icons/file-format/111/jpg_jpeg-512.png"
+                Source="{Binding Image}"
                 VerticalOptions="FillAndExpand" />
         </StackLayout>
 
@@ -25,13 +30,13 @@
             <!--  bottom controls  -->
             <Button
                 x:Name="CameraButton"
-                Clicked="CameraButton_Clicked"
+                Command="{Binding CapturePhotoCommand}"
                 HorizontalOptions="FillAndExpand"
                 Text="Camera" />
 
             <Button
                 x:Name="GalleryButton"
-                Clicked="GalleryButton_Clicked"
+                Command="{Binding PickPhotoCommand}"
                 HorizontalOptions="FillAndExpand"
                 Text="Gallery" />
         </StackLayout>
